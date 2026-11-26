@@ -18,9 +18,9 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     // Memberi label yang lebih informatif di navigasi
-    protected static ?string $navigationLabel = 'Referensi Kode Barang';
-    protected static ?string $pluralModelLabel = 'Referensi Kode Barang';
-    protected static ?string $modelLabel = 'Kategori Barang';
+    protected static ?string $navigationLabel = 'Ref Kode';
+    protected static ?string $pluralModelLabel = 'Ref Kode';
+    protected static ?string $modelLabel = 'Kategori Wilayah';
 
     public static function canViewAny(): bool
     {
@@ -51,19 +51,19 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Data Klasifikasi BMN')
-                    ->description('Pastikan kode barang sesuai dengan Standar Akuntansi Pemerintah (SAP)')
+                Forms\Components\Section::make('Data')
+                    ->description('Pastikan kode sesuai dengan Standar ')
                     ->schema([
                         Forms\Components\TextInput::make('kode_kategori')
-                            ->label('Kode Barang (Akun BMN)')
+                            ->label('Kode Wilayah')
                             ->placeholder('Contoh: 3.05.02.01.003')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('nama_kategori')
-                            ->label('Nama Kategori / Jenis Barang')
-                            ->placeholder('Contoh: Laptop / PC Tablet')
+                            ->label('Nama Wilayah')
+                            ->placeholder('Contoh: SATU')
                             ->required()
                             ->maxLength(255),
 
@@ -90,14 +90,14 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('kode_kategori')
-                    ->label('Kode BMN')
+                    ->label('Kode')
                     ->searchable()
                     ->sortable()
                     ->copyable() // Memudahkan admin copy-paste kode
                     ->fontFamily('mono'),
 
                 Tables\Columns\TextColumn::make('nama_kategori')
-                    ->label('Jenis Barang')
+                    ->label('Nama Wilayah')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
@@ -133,7 +133,7 @@ class CategoryResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('cetak_laporan')
-                    ->label('Cetak Daftar Aset')
+                    ->label('Cetak Daftar Berkas')
                     ->icon('heroicon-o-printer')
                     ->color('info')
                     ->url(fn (Category $record) => route('laporan.aset.pdf', ['category_id' => $record->id]))

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $asset->nama_barang }} - SIMA Lapas Jombang</title>
+    <title>{{ $asset->nama_barang }} - ATRBPN_BYL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -41,7 +41,7 @@
             <!-- Badge over Image -->
             <div class="absolute bottom-10 left-8">
                 <span class="px-4 py-2 bg-emerald-400 text-indigo-950 text-[11px] font-black rounded-xl uppercase tracking-widest shadow-xl">
-                    {{ $asset->category->nama_kategori ?? 'Aset BMN' }}
+                    {{ $asset->category->nama_kategori ?? 'Aset atrbpn' }}
                 </span>
                 <h1 class="text-3xl font-extrabold text-white mt-4 leading-tight">{{ $asset->nama_barang }}</h1>
             </div>

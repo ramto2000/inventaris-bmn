@@ -26,8 +26,8 @@ class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Aset BMN';
-    protected static ?string $pluralModelLabel = 'Data Aset';
+    protected static ?string $navigationLabel = 'Nomor Berkas';
+    protected static ?string $pluralModelLabel = 'Data Berkas';
 
     public static function canViewAny(): bool
     {
@@ -58,14 +58,14 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Asset Details')
+                Forms\Components\Tabs::make('Berkas Details')
                     ->tabs([
                         // TAB 1: INFORMASI UTAMA
                         Forms\Components\Tabs\Tab::make('General Info')
                             ->icon('heroicon-m-information-circle')
                             ->schema([
                                 Forms\Components\FileUpload::make('foto')
-                                    ->label('Foto Barang Fisik')
+                                    ->label('Foto Berkas Fisik')
                                     ->image()
                                     ->imageEditor()
                                     ->imageResizeMode('cover')
@@ -79,7 +79,7 @@ class AssetResource extends Resource
 
                                 Forms\Components\Grid::make(2)->schema([
                                     Forms\Components\Select::make('category_id')
-                                        ->label('Kategori Barang (BMN)')
+                                        ->label('Wilayah')
                                         ->relationship('category', 'nama_kategori')
                                         ->searchable()
                                         ->preload()
@@ -92,19 +92,19 @@ class AssetResource extends Resource
                                         })->required(),
 
                                     Forms\Components\TextInput::make('kode_barang')
-                                        ->label('Kode Akun BMN')
+                                        ->label('Kode')
                                         ->disabled()->dehydrated()
                                         ->placeholder('Otomatis dari kategori...'),
 
                                     Forms\Components\TextInput::make('nama_barang')
-                                        ->label('Nama Barang')
+                                        ->label('No Berkas')
                                         ->required(),
 
                                     Forms\Components\Select::make('kondisi')
                                         ->options([
-                                            'BAIK' => 'Baik',
-                                            'RUSAK_RINGAN' => 'Rusak Ringan',
-                                            'RUSAK_BERAT' => 'Rusak Berat',
+                                            'MASUK' => 'Tunda',
+                                            'PROSES' => 'Proses',
+                                            'SELESAI' => 'Selesai',
                                         ])->required(),
                                 ]),
                             ]),
@@ -115,11 +115,11 @@ class AssetResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('room_id')
                                     ->relationship('room', 'nama_ruangan')
-                                    ->label('Lokasi Internal (Ruangan)')
+                                    ->label('Lokasi Internal (Wilayah)')
                                     ->searchable()->preload()->required(),
 
                                 Forms\Components\Toggle::make('is_external')
-                                    ->label('Status: Digunakan di Luar Kantor?')
+                                    ->label('Status: Lainnya?')
                                     ->live(),
 
                                 Forms\Components\Grid::make(2)
@@ -130,7 +130,7 @@ class AssetResource extends Resource
                                         Forms\Components\TextInput::make('nip_pemakai')
                                             ->label('NIP Pegawai'),
                                         Forms\Components\Textarea::make('alamat_eksternal')
-                                            ->label('Alamat Lengkap Lokasi Barang')
+                                            ->label('Alamat Lengkap Lokasi ')
                                             ->columnSpanFull()
                                             ->required(fn($get) => $get('is_external')),
                                     ])->visible(fn($get) => $get('is_external')),
@@ -145,13 +145,13 @@ class AssetResource extends Resource
                                     Forms\Components\TextInput::make('harga_perolehan')
                                         ->required()->numeric()->prefix('Rp'),
                                     Forms\Components\Placeholder::make('info_masa_manfaat')
-                                        ->label('Masa Manfaat BMN')
+                                        ->label('Masa')
                                         ->content(fn($get) => $get('category_id')
                                             ? \App\Models\Category::find($get('category_id'))->masa_manfaat . ' Tahun'
                                             : '-'),
                                 ]),
                                 Forms\Components\Placeholder::make('qr_preview')
-                                    ->label('QR Code Asset (Self-Service)')
+                                    ->label('QR Code Berkas (Self-Service)')
                                     ->content(function ($record) {
                                         if (!$record) return 'Simpan dahulu untuk melihat QR';
                                         $url = route('public.asset.show', ['kode' => $record->kode_barang, 'nup' => $record->nup]);
@@ -161,14 +161,17 @@ class AssetResource extends Resource
                             ]),
 
                         // TAB 4: RIWAYAT HIDUP (TIMELINE)
-                        Forms\Components\Tabs\Tab::make('Riwayat Hidup Aset')
-                            ->icon('heroicon-m-clock')
-                            ->schema([
-                                Forms\Components\ViewField::make('timeline')
-                                    ->view('filament.resources.asset.timeline')
-                                    ->columnSpanFull()
-                                    ->visible(fn ($record) => $record !== null),
-                            ]),
+                        
+						Forms\Components\Tabs\Tab::make('Riwayat Berkas')
+						->icon('heroicon-m-clock')
+						->schema([
+							Forms\Components\ViewField::make('timeline')
+								->label('')
+								->view('filament.resources.asset.timeline')
+								->columnSpanFull()
+								->dehydrated(false)
+								->visible(fn ($record): bool => $record !== null),
+						]),
                     ])->columnSpanFull(),
             ]);
     }
@@ -187,6 +190,7 @@ class AssetResource extends Resource
 
                 // LAYOUT STACK UNTUK NAMA & KATEGORI
                 Tables\Columns\TextColumn::make('nama_barang')
+					->label('No Berkas')
                     ->searchable()
                     ->weight('bold')
                     ->description(fn(Asset $record): string => $record->category?->nama_kategori ?? 'Uncategorized'),
@@ -199,7 +203,7 @@ class AssetResource extends Resource
 
                 // FINANSIAL DENGAN WARNA DINAMIS
                 Tables\Columns\TextColumn::make('nilai_buku')
-                    ->label('Financial Status')
+                    ->label('Status')
                     ->money('IDR')
                     ->sortable()
                     ->description(fn(Asset $record): string => 'Depreciation: Rp ' . number_format(($record->harga_perolehan - $record->nilai_buku), 0, ',', '.'))
@@ -214,11 +218,11 @@ class AssetResource extends Resource
 
                 // KONDISI DENGAN BADGE INTERAKTIF
                 Tables\Columns\SelectColumn::make('kondisi')
-                    ->label('Condition')
+                    ->label('Posisi')
                     ->options([
-                        'BAIK' => 'Baik',
-                        'RUSAK_RINGAN' => 'Rusak Ringan',
-                        'RUSAK_BERAT' => 'Rusak Berat',
+                        'MASUK' => 'TUNDA',
+                        'PROSES' => 'PROSES',
+                        'SELESAI' => 'SELESAI',
                     ])->selectablePlaceholder(false),
             ])
             ->filters([
@@ -227,14 +231,14 @@ class AssetResource extends Resource
                     ->label('Kategori')
                     ->relationship('category', 'nama_kategori'),
                 Tables\Filters\SelectFilter::make('room_id')
-                    ->label('Ruangan')
+                    ->label('Petugas')
                     ->relationship('room', 'nama_ruangan'),
                 Tables\Filters\SelectFilter::make('kondisi')
-                    ->label('Kondisi')
+                    ->label('Posisi')
                     ->options([
-                        'BAIK' => 'Baik',
-                        'RUSAK_RINGAN' => 'Rusak Ringan',
-                        'RUSAK_BERAT' => 'Rusak Berat',
+                        'MASUK' => 'MASUK',
+                        'PROSES' => 'PROSES',
+                        'SELESAI' => 'SELESAI',
                     ]),
                 Tables\Filters\SelectFilter::make('is_external')
                     ->label('Position')
@@ -279,7 +283,7 @@ class AssetResource extends Resource
                         ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading('Pengajuan Penghapusan Aset')
+                        ->modalHeading('Pengajuan Penghapusan Berkas')
                         ->modalDescription('Apakah Anda yakin ingin mengajukan penghapusan untuk aset ini? Data akan masuk ke daftar usulan penghapusan.')
                         ->form([
                             Forms\Components\DatePicker::make('tanggal_penghapusan')
@@ -352,7 +356,7 @@ class AssetResource extends Resource
     {
         $data = ['records' => $records, 'date' => now()->format('d F Y')];
         $pdf = Pdf::loadView('pdf.assets_report', $data);
-        return response()->streamDownload(fn() => print($pdf->output()), "Laporan_BMN.pdf");
+        return response()->streamDownload(fn() => print($pdf->output()), "Laporan_Berkas.pdf");
     }
 
     public static function getRelations(): array
@@ -376,7 +380,13 @@ class AssetResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['room', 'category'])
-            ->withoutGlobalScopes([SoftDeletingScope::class]);
+		->with([
+			'room',
+			'category',
+			'mutations',
+			'maintenances',
+			'loans.user',
+		])
+		->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }

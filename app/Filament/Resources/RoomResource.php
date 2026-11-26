@@ -19,8 +19,8 @@ class RoomResource extends Resource
     protected static ?string $model = Room::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationLabel = 'Data Ruangan';
-    protected static ?string $pluralModelLabel = 'Data Ruangan';
+    protected static ?string $navigationLabel = 'Data Petugas';
+    protected static ?string $pluralModelLabel = 'Data Petugas';
 
     public static function canViewAny(): bool
     {
@@ -52,9 +52,11 @@ class RoomResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('kode_ruangan')
+					->label('Kode Petugas')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nama_ruangan')
+					->label('Nama Petugas')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('penanggung_jawab')
@@ -68,8 +70,10 @@ class RoomResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('kode_ruangan')
+					->label('Kode Petugas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nama_ruangan')
+					->label('Nama Petugas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('penanggung_jawab')
                     ->searchable(),
@@ -89,7 +93,7 @@ class RoomResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('cetak_dbr')
                     ->label('Cetak DBR')
-                    ->tooltip('Cetak Daftar Barang Ruangan (PDF)')
+                    ->tooltip('Cetak Daftar Berkas Petugas (PDF)')
                     ->icon('heroicon-o-printer')
                     ->color('success')
                     ->url(fn (Room $record) => route('cetak_kib', $record->id))

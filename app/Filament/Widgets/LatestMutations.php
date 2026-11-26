@@ -13,7 +13,7 @@ class LatestMutations extends BaseWidget
     protected static bool $isLazy = true;
     protected static ?int $sort = 3;
     protected int | string | array $columnSpan = 'full';
-    protected static ?string $heading = 'Riwayat Mutasi BMN Terbaru';
+    protected static ?string $heading = 'Riwayat Berkas Terbaru';
 
     public function table(Table $table): Table
     {

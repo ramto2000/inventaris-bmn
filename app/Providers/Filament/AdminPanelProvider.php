@@ -28,18 +28,20 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-            ->darkMode(true)
-            ->colors([
-                'primary' => Color::Cyan,
-                'danger' => Color::Rose,
-                'info' => Color::Blue,
-                'success' => Color::Emerald,
-                'warning' => Color::Amber,
-                'gray' => Color::Slate,
-            ])
+			->default()
+			->id('admin')
+			->path('admin')
+			->login()
+			->darkMode(false)
+			//->defaultThemeMode('light')
+			->colors([
+				'primary' => Color::Cyan,
+				'danger' => Color::Rose,
+				'info' => Color::Blue,
+				'success' => Color::Emerald,
+				'warning' => Color::Amber,
+				'gray' => Color::Slate,
+			])
             ->font('Outfit')
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
@@ -60,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
                 fn () => view('filament.pwa-head')
             )
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->brandName('SIMA Lapas Jombang')
+            ->brandName('tool atrbpn boyolali')
             ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/logo.png'))
@@ -73,22 +75,28 @@ class AdminPanelProvider extends PanelProvider
             ])
             // --- MENU SIDEBAR (RESOURCE) ---
             // Bagian ini WAJIB ada agar menu Aset, Room, dll muncul kembali
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-    \App\Filament\Pages\Dashboard::class, // Panggil dashboard custom kita
-        ])
-            ->widgets([
-                // Urutan pendaftaran di sini juga menentukan kerapian
-                \App\Filament\Widgets\StatsOverview::class,
-                \App\Filament\Widgets\AssetChart::class,
-                \App\Filament\Widgets\AssetConditionWidget::class,
-                \App\Filament\Widgets\MaintenanceDueWidget::class,
-                \App\Filament\Widgets\ProcurementTrendChart::class,
-                \App\Filament\Widgets\MaintenanceCostChart::class,
-                \App\Filament\Widgets\LatestMutations::class,
-                \App\Filament\Widgets\LatestPeminjaman::class,
-            ])
+			->discoverResources(
+						in: app_path('Filament/Resources'),
+						for: 'App\\Filament\\Resources'
+					)
+			->discoverPages(
+						in: app_path('Filament/Pages'),
+						for: 'App\\Filament\\Pages'
+					)
+			->pages([
+						\App\Filament\Pages\Dashboard::class,
+					])
+					->widgets([
+						\App\Filament\Widgets\StatsOverview::class,
+						\App\Filament\Widgets\AssetChart::class,
+						\App\Filament\Widgets\AssetConditionWidget::class,
+						\App\Filament\Widgets\MaintenanceDueWidget::class,
+						\App\Filament\Widgets\ProcurementTrendChart::class,
+						\App\Filament\Widgets\RoomInventoryStats::class,
+						\App\Filament\Widgets\MaintenanceCostChart::class,
+						\App\Filament\Widgets\LatestMutations::class,
+						\App\Filament\Widgets\LatestPeminjaman::class,
+					])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ])

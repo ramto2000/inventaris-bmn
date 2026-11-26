@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Room;
-use App\Models\Asset;
 use Filament\Widgets\Widget;
 
 class RoomInventoryStats extends Widget
@@ -23,9 +22,9 @@ class RoomInventoryStats extends Widget
                 'code' => $room->kode_ruangan,
                 'pj' => $room->penanggung_jawab,
                 'total_assets' => $room->assets->count(),
-                'baik' => $room->assets->where('kondisi', 'BAIK')->count(),
-                'rusak_ringan' => $room->assets->where('kondisi', 'RUSAK_RINGAN')->count(),
-                'rusak_berat' => $room->assets->where('kondisi', 'RUSAK_BERAT')->count(),
+                'baik' => $room->assets->where('kondisi', 'MASUK')->count(),
+                'rusak_ringan' => $room->assets->where('kondisi', 'PROSES')->count(),
+                'rusak_berat' => $room->assets->where('kondisi', 'SELESAI')->count(),
             ];
         });
     }

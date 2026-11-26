@@ -5,47 +5,29 @@ namespace App\Filament\Widgets;
 use App\Models\Asset;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Widgets\TableWidget as BaseWidget;
+use Filament\Widgets\TableWidget;
 
-class AssetConditionWidget extends BaseWidget
+class AssetConditionWidget extends TableWidget
 {
-    protected static bool $isLazy = true;
-    protected static ?int $sort = 2; // Urutan ketiga, di sebelah chart
-
-    protected int | string | array $columnSpan = 6;
-
-    protected static ?string $heading = 'Ringkasan Kondisi BMN';
-
-    public function getTableRecordKey($record): string
-    {
-        return $record->kondisi;
-    }
+    protected static ?int $sort = 2;
 
     public function table(Table $table): Table
     {
         return $table
             ->query(
                 Asset::query()
-                    ->selectRaw('kondisi, count(*) as total, MIN(id) as id')
+                    ->selectRaw('MIN(id) as id, kondisi, COUNT(*) as total')
                     ->groupBy('kondisi')
             )
             ->columns([
                 Tables\Columns\TextColumn::make('kondisi')
-                    ->label('Kondisi Barang')
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'BAIK' => 'success',
-                        'RUSAK_RINGAN' => 'warning',
-                        'RUSAK_BERAT' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->label('Kondisi'),
 
                 Tables\Columns\TextColumn::make('total')
-                    ->label('Jumlah Unit')
-                    ->suffix(' Unit')
-                    ->alignEnd()
-                    ->weight('bold'),
+                    ->label('Jumlah')
+                    ->numeric()
+                    ->sortable(),
             ])
-            ->paginated(false);
+            ->defaultSort('total', 'desc');
     }
 }

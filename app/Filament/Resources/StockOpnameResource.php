@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StockOpnameResource\Pages;
-use App\Filament\Resources\StockOpnameResource\RelationManagers;
 use App\Models\StockOpname;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StockOpnameResource extends Resource
 {
@@ -24,18 +21,23 @@ class StockOpnameResource extends Resource
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('tanggal')
+                    ->label('Tanggal')
                     ->required()
                     ->default(now()),
+
                 Forms\Components\Select::make('room_id')
-                    ->relationship('room', 'name')
+                    ->relationship('room', 'nama_ruangan')
                     ->label('Ruangan Target')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->required(),
+
                 Forms\Components\Select::make('assigned_user_id')
                     ->relationship('assignedUser', 'name')
                     ->label('Petugas Pemeriksa')
                     ->searchable()
                     ->preload(),
+
                 Forms\Components\Select::make('status')
                     ->options([
                         'draft' => 'Draft',
@@ -44,7 +46,9 @@ class StockOpnameResource extends Resource
                     ])
                     ->default('draft')
                     ->required(),
+
                 Forms\Components\Textarea::make('note')
+                    ->label('Catatan')
                     ->columnSpanFull(),
             ]);
     }
@@ -55,46 +59,61 @@ class StockOpnameResource extends Resource
             ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Tanggal')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('room.name')
+
+                Tables\Columns\TextColumn::make('room.nama_ruangan')
                     ->label('Ruangan')
                     ->sortable()
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('assignedUser.name')
-                    ->label('Petugas'),
+                    ->label('Petugas')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'draft' => 'gray',
                         'on_progress' => 'warning',
                         'completed' => 'success',
+                        default => 'gray',
                     }),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaults([
-                Tables\Columns\TextColumn::make('created_at')->sortable('desc'),
-            ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
                 Tables\Actions\Action::make('scan')
                     ->label('Mulai audit')
                     ->icon('heroicon-o-qr-code')
                     ->color('success')
-                    ->url(fn (StockOpname $record): string => Pages\ScanStockOpname::getUrl(['record' => $record])),
+                    ->url(
+                        fn (StockOpname $record): string =>
+                            Pages\ScanStockOpname::getUrl([
+                                'record' => $record,
+                            ])
+                    ),
+
                 Tables\Actions\Action::make('download_report')
                     ->label('Laporan')
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('info')
                     ->action(function (StockOpname $record) {
-                        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.stock_opname_report', ['record' => $record])
-                            ->setPaper('a4', 'portrait');
+                        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+                            'pdf.stock_opname_report',
+                            ['record' => $record]
+                        )->setPaper('a4', 'portrait');
+
                         return response()->streamDownload(
                             fn () => print($pdf->output()),
                             'Laporan-Audit-' . $record->id . '.pdf'
@@ -110,9 +129,7 @@ class StockOpnameResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

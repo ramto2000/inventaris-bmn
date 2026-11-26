@@ -19,7 +19,7 @@ class LoanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     // Ganti Label Menu jadi Bahasa Indonesia
-    protected static ?string $navigationLabel = 'Peminjaman Barang';
+    protected static ?string $navigationLabel = 'Peminjaman Berkas';
     protected static ?string $pluralModelLabel = 'Data Peminjaman';
     protected static ?string $navigationGroup = 'Transaksi'; // Biar ada grup menu baru
 

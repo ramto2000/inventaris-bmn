@@ -8,68 +8,128 @@
 @source '../../../../vendor/filament/**/*.blade.php';
 
 @theme {
-    --color-primary-500: #06b6d4; /* Cyan */
+    --color-primary-500: #06b6d4;
     --color-primary-600: #0891b2;
 }
 
-/* --- GLOBAL DARK STYLES --- */
+/* =========================================================
+   GLOBAL LIGHT THEME
+   ========================================================= */
+
 body {
-    background-color: #020617 !important; /* Deepest Navy */
-    color: #f8fafc !important;
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
     font-family: 'Outfit', sans-serif;
 }
 
-/* --- SIDEBAR STYLING --- */
-.fi-sidebar {
-    background: #0f172a !important; /* Slate 900 */
-    border-right: 1px solid #1e293b !important;
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.fi-main {
+    background-color: #f8fafc !important;
 }
 
-.fi-sidebar-nav-label, .fi-sidebar-group-label {
-    color: #94a3b8 !important; /* Slate 400 */
-    font-weight: 800 !important;
+.fi-body {
+    background-color: #f8fafc !important;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.fi-sidebar {
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+.fi-sidebar-nav-label,
+.fi-sidebar-group-label {
+    color: #64748b !important;
+    font-weight: 700 !important;
 }
 
 .fi-sidebar-item-label {
-    color: #e2e8f0 !important;
+    color: #334155 !important;
 }
+
+/* Sidebar item */
+
+.fi-sidebar-item-button {
+    color: #334155 !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: #ecfeff !important;
+    color: #0891b2 !important;
+}
+
+/* Active sidebar */
 
 .fi-sidebar-item-active .fi-sidebar-item-button {
-    background: linear-gradient(90deg, #0891b2 0%, #06b6d4 100%) !important;
+    background: linear-gradient(
+        90deg,
+        #0891b2 0%,
+        #06b6d4 100%
+    ) !important;
+
     color: #ffffff !important;
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.2) !important;
+
+    box-shadow:
+        0 4px 12px rgba(6, 182, 212, 0.20) !important;
 }
 
-/* --- TOPBAR --- */
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
 .fi-topbar {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(12px) !important;
-    border-bottom: 1px solid #1e293b !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }
 
-/* --- CARD & WIDGET STYLING (THE CORE FIX) --- */
-.fi-section, .fi-ta-ctn, .fi-widget {
-    background-color: #0f172a !important; /* Slate 900 */
-    border: 1px solid #1e293b !important;
-    border-radius: 24px !important;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+/* =========================================================
+   CARDS / SECTIONS / WIDGETS
+   ========================================================= */
+
+.fi-section,
+.fi-ta-ctn,
+.fi-widget {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* Stats Overview Text Visibility */
+/* =========================================================
+   STATS OVERVIEW
+   ========================================================= */
+
 .fi-wi-stats-overview-stat {
-    background: #1e293b !important; /* Slate 800 for contrast */
-    border-radius: 20px !important;
-    border: 1px solid #334155 !important;
-    transition: transform 0.2s ease;
+    background-color: #ffffff !important;
+
+    border-radius: 16px !important;
+    border: 1px solid #e2e8f0 !important;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease !important;
 }
 
 .fi-wi-stats-overview-stat:hover {
-    transform: scale(1.02);
-    border-color: #06b6d4;
+    transform: translateY(-2px);
+
+    border-color: #06b6d4 !important;
+
+    box-shadow:
+        0 8px 20px rgba(6, 182, 212, 0.12) !important;
 }
 
 .fi-wi-stats-overview-stat-label {
-    color: #94a3b8 !important; /* Secondary text */
+    color: #64748b !important;
     font-weight: 600 !important;
     font-size: 0.875rem !important;
     text-transform: uppercase !important;
@@ -77,58 +137,130 @@ body {
 }
 
 .fi-wi-stats-overview-stat-value {
-    color: #ffffff !important; /* Pure White for Main Numbers */
+    color: #0f172a !important;
     font-weight: 900 !important;
     font-size: 1.875rem !important;
     margin-top: 4px !important;
 }
 
 .fi-wi-stats-overview-stat-description {
-    color: #22d3ee !important; /* Cyan for subtitles */
+    color: #0891b2 !important;
     font-weight: 700 !important;
     font-size: 0.75rem !important;
 }
 
-/* Icons in Stats */
+/* =========================================================
+   STATS ICON
+   ========================================================= */
+
 .fi-wi-stats-overview-stat-icon {
-    color: #06b6d4 !important; /* Cyan Icons */
-    background: rgba(6, 182, 212, 0.1) !important;
+    color: #0891b2 !important;
+
+    background-color: #ecfeff !important;
+
     padding: 8px !important;
     border-radius: 12px !important;
 }
 
-/* --- TABLE DARK MODE --- */
+/* =========================================================
+   TABLE
+   ========================================================= */
+
 .fi-ta-header-cell-label {
-    color: #64748b !important;
+    color: #475569 !important;
     font-weight: 800 !important;
 }
 
 .fi-ta-cell-content {
-    color: #cbd5e1 !important;
+    color: #334155 !important;
+}
+
+.fi-ta-row {
+    background-color: #ffffff !important;
 }
 
 .fi-ta-row:hover {
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    background-color: #f8fafc !important;
 }
 
-/* --- FORM & INPUTS --- */
+/* =========================================================
+   FORM
+   ========================================================= */
+
 .fi-fo-field-label {
-    color: #e2e8f0 !important;
+    color: #334155 !important;
     font-weight: 700 !important;
 }
 
-input, select, textarea {
-    background-color: #020617 !important;
-    border-color: #334155 !important;
-    color: #ffffff !important;
+input,
+select,
+textarea {
+    background-color: #ffffff !important;
+
+    border-color: #cbd5e1 !important;
+
+    color: #0f172a !important;
 }
 
-/* --- LOGIN PAGE --- */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #06b6d4 !important;
+
+    box-shadow:
+        0 0 0 1px #06b6d4 !important;
+}
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
 .fi-login-page {
-    background: #020617 !important;
+    background-color: #f8fafc !important;
 }
 
 .fi-login-page .fi-card {
-    background: #0f172a !important;
-    border: 1px solid #1e293b !important;
+    background-color: #ffffff !important;
+
+    border: 1px solid #e2e8f0 !important;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.fi-modal-window {
+    background-color: #ffffff !important;
+}
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.fi-dropdown-panel {
+    background-color: #ffffff !important;
+
+    border: 1px solid #e2e8f0 !important;
+
+    box-shadow:
+        0 10px 25px rgba(15, 23, 42, 0.10) !important;
+}
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
+
+.fi-no-notification {
+    background-color: #ffffff !important;
+}
+
+/* =========================================================
+   BADGE / STATUS
+   ========================================================= */
+
+.fi-badge {
+    font-weight: 700 !important;
 }

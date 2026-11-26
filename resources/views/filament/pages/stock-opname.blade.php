@@ -10,7 +10,7 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="p-4">Ditemukan</th>
-                            <th scope="col" class="px-6 py-3">Nama Barang</th>
+                            <th scope="col" class="px-6 py-3">Nomor Berkas</th>
                             <th scope="col" class="px-6 py-3">NUP</th>
                             <th scope="col" class="px-6 py-3">Kondisi Asal</th>
                             <th scope="col" class="px-6 py-3">Kondisi Verifikasi</th>
@@ -29,9 +29,9 @@
                                 <td class="px-6 py-4">{{ $asset->kondisi }}</td>
                                 <td class="px-6 py-4">
                                     <select wire:model.defer="assetStates.{{$asset->id}}.new_condition" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option value="BAIK">Baik</option>
-                                        <option value="RUSAK_RINGAN">Rusak Ringan</option>
-                                        <option value="RUSAK_BERAT">Rusak Berat</option>
+                                        <option value="MASUK">MASUK</option>
+                                        <option value="PROSES">PROSES</option>
+                                        <option value="SELESAI">SELESAI</option>
                                     </select>
                                 </td>
                             </tr>

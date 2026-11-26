@@ -54,35 +54,47 @@ class MaintenanceResource extends Resource
                             ->columnSpanFull(),
                     ])->columns(2),
                 
-                Forms\Components\Section::make('Tindak Lanjut Perbaikan')
-                    ->description('Diisi oleh teknisi atau admin saat perbaikan dilakukan.')
-                    ->schema([
-                        Forms\Components\Grid::make(2)->schema([
-                            Forms\Components\Select::make('status')
-                                ->options([
-                                    'pending' => 'Menunggu (Pending)',
-                                    'processing' => 'Sedang Diproses',
-                                    'completed' => 'Selesai (Fixed)',
-                                    'unrepairable' => 'Rusak Berat (Tidak Bisa Diperbaiki)'
-                                ])
-                                ->default('pending')
-                                ->required(),
-                            Forms\Components\DatePicker::make('tanggal_selesai'),
-                        ]),
-                        Forms\Components\Textarea::make('tindakan')
-                            ->label('Tindakan Perbaikan')
-                            ->columnSpanFull(),
-                        Forms\Components\Grid::make(2)->schema([
-                            Forms\Components\TextInput::make('vendor')
-                                ->label('Nama Vendor / Teknisi'),
-                            Forms\Components\TextInput::make('biaya')
-                                ->numeric()
-                                ->prefix('Rp')
-                                ->default(0),
-                        ]),
-                    ])
-                    ->collapsible()
-                    ->collapsed(fn ($record) => $record === null), // Auto collapse on create
+				Forms\Components\Section::make('Tindak Lanjut Perbaikan')
+					->description('Diisi oleh teknisi atau admin saat perbaikan dilakukan.')
+					->schema([
+						Forms\Components\Grid::make(3)->schema([
+							Forms\Components\Select::make('status')
+								->label('Status')
+								->options([
+									'pending' => 'Menunggu (Pending)',
+									'processing' => 'Sedang Diproses',
+									'completed' => 'Selesai (Fixed)',
+									'unrepairable' => 'Rusak Berat (Tidak Bisa Diperbaiki)',
+								])
+								->default('pending')
+								->required(),
+
+				Forms\Components\DatePicker::make('tanggal_servis')
+								->label('Tanggal Servis')
+								->nullable(),
+
+				Forms\Components\DatePicker::make('tanggal_selesai')
+								->label('Tanggal Selesai')
+								->nullable(),
+						]),
+
+				Forms\Components\Textarea::make('tindakan')
+							->label('Tindakan Perbaikan')
+							->columnSpanFull(),
+
+				Forms\Components\Grid::make(2)->schema([
+				Forms\Components\TextInput::make('vendor')
+								->label('Nama Vendor / Teknisi'),
+
+				Forms\Components\TextInput::make('biaya')
+								->label('Biaya')
+								->numeric()
+								->prefix('Rp')
+								->default(0),
+						]),
+					])
+				->collapsible()
+				->collapsed(fn ($record) => $record === null),
             ]);
     }
 
@@ -116,10 +128,8 @@ class MaintenanceResource extends Resource
                 Tables\Columns\TextColumn::make('biaya')
                     ->money('IDR')
                     ->sortable(),
-            ])
-            ->defaults([
-                Tables\Columns\TextColumn::make('tanggal_lapor')->sortable('desc'),
-            ])
+                        ])
+            ->defaultSort('tanggal_lapor', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([

@@ -20,7 +20,7 @@ class Login extends BaseLogin
                     ->required()
                     ->autocomplete()
                     ->autofocus()
-                    ->placeholder('nama@lapas.go.id')
+                    ->placeholder('nama@atrbpn.go.id')
                     ->extraInputAttributes(['tabindex' => 1]),
                 TextInput::make('password')
                     ->label('Password')
@@ -37,12 +37,12 @@ class Login extends BaseLogin
 
     public function getHeading(): string|Htmlable
     {
-        return 'Selamat Datang di SIMA';
+        return 'Selamat Datang di TOOL_atrbpn';
     }
 
     public function getSubHeading(): string|Htmlable|null
     {
-        return 'Sistem Informasi Manajemen Aset - Lapas Jombang';
+        return 'Aplikasi Tool - Kantah Boyolali';
     }
 
     public function getView(): string

@@ -14,13 +14,13 @@
 </head>
 <body>
     <div class="kop-surat">
-        <h2>KEMENTERIAN HUKUM DAN HAM RI</h2>
-        <h3>KANTOR WILAYAH JAWA TIMUR</h3>
-        <h1>LAPAS KELAS IIB JOMBANG</h1>
-        <p>Jl. KH. Wahid Hasyim No.151, Jombang, Jawa Timur</p>
+        <h2>KEMENTERIAN ATRBPN</h2>
+        <h3>KANTAH KAB. BOYOLALI</h3>
+        <h1></h1>
+        <p>Jl. Ringroute Selatan Byl</p>
     </div>
 
-    <h3 style="text-align: center;">DAFTAR INVENTARIS BARANG MILIK NEGARA (BMN)</h3>
+    <h3 style="text-align: center;">DAFTAR INVENTARIS SEKSI SP KANTAH BOYOLALI</h3>
     <p>Tanggal Cetak: {{ $date }}</p>
 
     <table>
@@ -49,8 +49,8 @@
     </table>
 
     <div class="footer">
-        <p>Jombang, {{ $date }}</p>
-        <p>Pengelola BMN,</p>
+        <p>Boyolali, {{ $date }}</p>
+        <p>Petugas,</p>
         <br><br><br>
         <p><b>( ........................... )</b></p>
         <p>NIP. .........................</p>

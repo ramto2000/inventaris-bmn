@@ -22,7 +22,7 @@ class AssetValueChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Total Nilai Aset (Rp)',
+                    'label' => 'Total Nilai Berkas (Rp)',
                     'data' => $data->values()->toArray(),
                     'backgroundColor' => '#3b82f6',
                 ],

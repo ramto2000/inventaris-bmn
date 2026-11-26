@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class MaintenanceCostChart extends ChartWidget
 {
-    protected static ?string $heading = 'Tren Biaya Pemeliharaan';
+    protected static ?string $heading = 'Biaya';
     protected static ?int $sort = 5;
     protected static bool $isLazy = true;
 

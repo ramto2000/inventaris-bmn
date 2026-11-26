@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class AssetChart extends ChartWidget
 {
-    protected static ?string $heading = 'Sebaran Aset per Ruangan';
+    protected static ?string $heading = 'Sebaran Berkas per Petugas';
 
     protected int | string | array $columnSpan = 'full';
 

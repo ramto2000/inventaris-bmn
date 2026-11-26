@@ -3,11 +3,16 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
+
 use App\Filament\Widgets\AssetChart;
 use App\Filament\Widgets\AssetConditionWidget;
 use App\Filament\Widgets\LatestMutations;
 use App\Filament\Widgets\LatestPeminjaman;
 use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\MaintenanceDueWidget;
+use App\Filament\Widgets\ProcurementTrendChart;
+use App\Filament\Widgets\RoomInventoryStats;
+use App\Filament\Widgets\MaintenanceCostChart;
 
 class Dashboard extends BaseDashboard
 {
@@ -22,12 +27,12 @@ class Dashboard extends BaseDashboard
             StatsOverview::class,
             AssetChart::class,
             AssetConditionWidget::class,
-            \App\Filament\Widgets\MaintenanceDueWidget::class,
-            \App\Filament\Widgets\ProcurementTrendChart::class,
-            \App\Filament\Widgets\RoomInventoryStats::class,
-            \App\Filament\Widgets\MaintenanceCostChart::class,
-            LatestMutations::class,
-            LatestPeminjaman::class,
+            //MaintenanceDueWidget::class,
+            //ProcurementTrendChart::class,
+            RoomInventoryStats::class,
+            //MaintenanceCostChart::class,
+            //LatestMutations::class,
+            //LatestPeminjaman::class,
         ];
     }
 }

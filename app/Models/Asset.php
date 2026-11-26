@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,67 +13,88 @@ use Spatie\Activitylog\LogOptions;
 
 class Asset extends Model
 {
-    use SoftDeletes, LogsActivity; // Mengaktifkan soft delete & audit log
+    use SoftDeletes, LogsActivity;
 
-    // Mengizinkan semua kolom diisi (Mass Assignment)
+    /**
+     * Mass Assignment
+     */
     protected $guarded = [];
 
+    /**
+     * Activity Log
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['*']) // Catat perubahan semua kolom
-            ->logOnlyDirty() // Hanya catat kolom yang berubah
-            ->dontSubmitEmptyLogs(); // Jangan catat jika tidak ada perubahan
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     /**
-     * Logic Otomatis (Booted):
-     * 1. Saving: Menarik kode_barang otomatis dari kategori sebelum data disimpan.
-     * 2. Updating: Mencatat riwayat mutasi jika terjadi perubahan ruangan (room_id).
+     * Logic otomatis.
      */
-    protected static function booted()
+    protected static function booted(): void
     {
-        // LOGIC SEBELUM SIMPAN (CREATE/UPDATE)
+        /*
+         * CREATE / UPDATE
+         * Ambil kode barang dari kategori.
+         */
         static::saving(function ($asset) {
-            // Jika user memilih kategori, tarik kode_kategori-nya secara otomatis ke kode_barang
             if ($asset->category_id) {
-                $category = \App\Models\Category::find($asset->category_id);
+                $category = Category::find($asset->category_id);
+
                 if ($category) {
                     $asset->kode_barang = $category->kode_kategori;
                 }
             }
         });
 
-        // LOGIC SAAT UPDATE RUANGAN (MUTASI)
+        /*
+         * UPDATE
+         * Catat mutasi jika room_id berubah.
+         */
         static::updating(function ($asset) {
-            // Hanya rekam mutasi jika ada perubahan pada room_id
             if ($asset->isDirty('room_id')) {
                 $oldRoomId = $asset->getOriginal('room_id');
                 $newRoomId = $asset->room_id;
 
-                // Cari nama ruangan asal
-                $oldRoomName = \App\Models\Room::find($oldRoomId)?->nama_ruangan ?? 'Lokasi Awal';
+                // Ruangan asal
+                $oldRoom = Room::find($oldRoomId);
 
-                // Cari data ruangan tujuan
-                $roomTujuan = \App\Models\Room::find($newRoomId);
+                // Ruangan tujuan
+                $roomTujuan = Room::find($newRoomId);
 
-                \App\Models\AssetMutation::create([
+                AssetMutation::create([
                     'asset_id' => $asset->id,
-                    'ruangan_asal' => $oldRoomName,
-                    'ruangan_tujuan' => $roomTujuan->nama_ruangan ?? 'Ruangan Baru',
-                    'petugas' => auth()->user()->name ?? 'System',
-                    // Mencatat Pj baru dari ruangan tujuan atau dari pemakai eksternal
-                    'penanggung_jawab_baru' => $roomTujuan->penanggung_jawab ?? $asset->nama_pemakai ?? '-',
-                    'alasan' => 'Perubahan Lokasi Ruangan BMN',
+
+                    'ruangan_asal' =>
+                        $oldRoom?->nama_ruangan ?? 'Lokasi Awal',
+
+                    'ruangan_tujuan' =>
+                        $roomTujuan?->nama_ruangan ?? 'Ruangan Baru',
+
+                    'petugas' =>
+                        auth()->user()->name ?? 'System',
+
+                    'penanggung_jawab_baru' =>
+                        $roomTujuan?->penanggung_jawab
+                        ?? $asset->nama_pemakai
+                        ?? '-',
+
+                    'alasan' =>
+                        'Perubahan Lokasi Ruangan BMN',
                 ]);
             }
         });
     }
 
-    // --- RELASI DATABASE ---
+    // =========================================================
+    // RELASI DATABASE
+    // =========================================================
 
     /**
-     * Relasi ke Kategori: Menentukan Kode Akun & Masa Manfaat BMN
+     * Relasi ke Kategori.
      */
     public function category(): BelongsTo
     {
@@ -80,49 +102,67 @@ class Asset extends Model
     }
 
     /**
-     * Relasi ke Ruangan: Satu aset berada di satu ruangan internal
+     * Relasi ke Ruangan.
+     * Satu aset berada di satu ruangan.
      */
     public function room(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class, 'room_id');
     }
 
     /**
-     * Relasi ke Peminjaman: Satu aset bisa memiliki banyak riwayat peminjaman
+     * Relasi ke Peminjaman.
      */
     public function loans(): HasMany
     {
-        return $this->hasMany(Loan::class);
+        return $this->hasMany(Loan::class, 'asset_id');
     }
 
     /**
-     * Relasi ke Pemeliharaan: Satu aset bisa memiliki banyak riwayat servis
+     * Relasi ke Pemeliharaan.
      */
     public function maintenances(): HasMany
     {
-        return $this->hasMany(Maintenance::class);
+        return $this->hasMany(Maintenance::class, 'asset_id');
     }
 
     /**
-     * Relasi ke Mutasi: Melihat riwayat perpindahan ruangan aset ini
+     * Relasi ke Mutasi.
      */
     public function mutations(): HasMany
     {
-        return $this->hasMany(AssetMutation::class);
+        return $this->hasMany(AssetMutation::class, 'asset_id');
     }
+
+    /**
+     * Nilai Buku Aset.
+     */
     public function getNilaiBukuAttribute()
     {
-        $harga = $this->harga_perolehan;
-        $tanggalPerolehan = \Carbon\Carbon::parse($this->tanggal_perolehan);
-        $masaManfaat = $this->category->masa_manfaat ?? 1; // Ambil dari relasi kategori
+        $harga = (float) ($this->harga_perolehan ?? 0);
+
+        if (!$this->tanggal_perolehan) {
+            return $harga;
+        }
+
+        $tanggalPerolehan = Carbon::parse($this->tanggal_perolehan);
+
+        $masaManfaat = (int) (
+            $this->category?->masa_manfaat ?? 1
+        );
+
+        if ($masaManfaat <= 0) {
+            $masaManfaat = 1;
+        }
 
         $usiaBarang = $tanggalPerolehan->diffInYears(now());
+
         $penyusutanPerTahun = $harga / $masaManfaat;
 
         $totalPenyusutan = $penyusutanPerTahun * $usiaBarang;
+
         $nilaiBuku = $harga - $totalPenyusutan;
 
-        // Jika barang sudah lewat masa manfaat, nilai buku tidak boleh negatif (minimal Rp 1 atau Rp 0)
-        return $nilaiBuku > 0 ? $nilaiBuku : 0;
+        return max(0, $nilaiBuku);
     }
 }

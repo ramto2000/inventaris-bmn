@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Aset BMN</title>
+    <title>Laporan Berkas</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
 
 <div class="container mx-auto p-8">
     <div class="mb-6 flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-gray-800">Laporan Aset BMN</h1>
+        <h1 class="text-3xl font-bold text-gray-800">Laporan Berkas</h1>
         <a href="/admin" class="text-blue-500 hover:underline">Kembali ke Dashboard</a>
     </div>
 

@@ -11,42 +11,105 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Assets table indexes
+        /*
+         * ASSETS
+         *
+         * category_id, room_id dan kondisi sudah memiliki index.
+         * assets.status tidak ada.
+         */
         Schema::table('assets', function (Blueprint $table) {
-            $table->index('category_id');
-            $table->index('room_id');
-            $table->index('kondisi');
-            $table->index('status');
-            $table->index('tanggal_perolehan');
+            $table->index(
+                'tanggal_perolehan',
+                'assets_tanggal_perolehan_index'
+            );
         });
 
-        // Loans table indexes
+        /*
+         * LOANS
+         */
         Schema::table('loans', function (Blueprint $table) {
-            $table->index('asset_id');
-            $table->index('status');
-            $table->index('tanggal_pinjam');
+            $table->index(
+                'asset_id',
+                'loans_asset_id_index'
+            );
+
+            $table->index(
+                'status',
+                'loans_status_index'
+            );
+
+            $table->index(
+                'tanggal_pinjam',
+                'loans_tanggal_pinjam_index'
+            );
         });
 
-        // Maintenances table indexes
+        /*
+         * MAINTENANCES
+         */
         Schema::table('maintenances', function (Blueprint $table) {
-            $table->index('asset_id');
-            $table->index('pelapor_id');
-            $table->index('status');
-            $table->index('tanggal_servis');
+            $table->index(
+                'asset_id',
+                'maintenances_asset_id_index'
+            );
+
+            $table->index(
+                'pelapor_id',
+                'maintenances_pelapor_id_index'
+            );
+
+            $table->index(
+                'status',
+                'maintenances_status_index'
+            );
+
+            $table->index(
+                'tanggal_servis',
+                'maintenances_tanggal_servis_index'
+            );
         });
 
-        // Procurements table indexes
+        /*
+         * PROCUREMENTS
+         */
         Schema::table('procurements', function (Blueprint $table) {
-            $table->index('user_id');
-            $table->index('status');
-            $table->index('tgl_pengajuan');
+            $table->index(
+                'user_id',
+                'procurements_user_id_index'
+            );
+
+            $table->index(
+                'status',
+                'procurements_status_index'
+            );
+
+            $table->index(
+                'tgl_pengajuan',
+                'procurements_tgl_pengajuan_index'
+            );
         });
 
-        // Stock opnames table indexes
+        /*
+         * STOCK OPNAMES
+         *
+         * Kolom user_id TIDAK ADA.
+         * Kolom yang tersedia adalah assigned_user_id.
+         */
         Schema::table('stock_opnames', function (Blueprint $table) {
-            $table->index('room_id');
-            $table->index('user_id');
-            $table->index('status');
+            $table->index(
+                'room_id',
+                'stock_opnames_room_id_index'
+            );
+
+            $table->index(
+                'assigned_user_id',
+                'stock_opnames_assigned_user_id_index'
+            );
+
+            $table->index(
+                'status',
+                'stock_opnames_status_index'
+            );
         });
     }
 
@@ -56,36 +119,34 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropIndex(['category_id']);
-            $table->dropIndex(['room_id']);
-            $table->dropIndex(['kondisi']);
-            $table->dropIndex(['status']);
-            $table->dropIndex(['tanggal_perolehan']);
+            $table->dropIndex('assets_tanggal_perolehan_index');
         });
 
         Schema::table('loans', function (Blueprint $table) {
-            $table->dropIndex(['asset_id']);
-            $table->dropIndex(['status']);
-            $table->dropIndex(['tanggal_pinjam']);
+            $table->dropIndex('loans_asset_id_index');
+            $table->dropIndex('loans_status_index');
+            $table->dropIndex('loans_tanggal_pinjam_index');
         });
 
         Schema::table('maintenances', function (Blueprint $table) {
-            $table->dropIndex(['asset_id']);
-            $table->dropIndex(['pelapor_id']);
-            $table->dropIndex(['status']);
-            $table->dropIndex(['tanggal_servis']);
+            $table->dropIndex('maintenances_asset_id_index');
+            $table->dropIndex('maintenances_pelapor_id_index');
+            $table->dropIndex('maintenances_status_index');
+            $table->dropIndex('maintenances_tanggal_servis_index');
         });
 
         Schema::table('procurements', function (Blueprint $table) {
-            $table->dropIndex(['user_id']);
-            $table->dropIndex(['status']);
-            $table->dropIndex(['tgl_pengajuan']);
+            $table->dropIndex('procurements_user_id_index');
+            $table->dropIndex('procurements_status_index');
+            $table->dropIndex('procurements_tgl_pengajuan_index');
         });
 
         Schema::table('stock_opnames', function (Blueprint $table) {
-            $table->dropIndex(['room_id']);
-            $table->dropIndex(['user_id']);
-            $table->dropIndex(['status']);
+            $table->dropIndex('stock_opnames_room_id_index');
+            $table->dropIndex(
+                'stock_opnames_assigned_user_id_index'
+            );
+            $table->dropIndex('stock_opnames_status_index');
         });
     }
 };

@@ -22,10 +22,10 @@
 </head>
 <body>
     <div class="kop">
-        <h4>KEMENTERIAN HUKUM DAN HAK ASASI MANUSIA RI</h4>
-        <h4>KANTOR WILAYAH JAWA TIMUR</h4>
-        <h3>LAPAS KELAS IIB JOMBANG</h3>
-        <p>Jl. KH. Wahid Hasyim No. 151, Jombang | Telp: (0321) 861113</p>
+        <h4>KEMENTERIAN ATRBPN RI</h4>
+        <h4>KANTOR WILAYAH JAWA TENGAH</h4>
+        <h3>KANTAH KAB. BOYOLALI</h3>
+        <p>Jl. RINGROUTE SELATAN BYL</p>
     </div>
 
     <div class="title">SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM)</div>
@@ -45,7 +45,7 @@
         <tr>
             <td>Jabatan</td>
             <td>:</td>
-            <td>Staf / Pegawai Lapas Kelas IIB Jombang</td>
+            <td>Staf / Pegawai ATRBPN KANTAH KAB.BOYOLALI</td>
         </tr>
         <tr>
             <td>Alamat Penggunaan</td>
@@ -93,7 +93,7 @@
 
     <div class="footer">
         <div class="ttd">
-            Jombang, {{ now()->translatedFormat('d F Y') }}<br>
+            Boyolali, {{ now()->translatedFormat('d F Y') }}<br>
             Yang Membuat Pernyataan,
             <br><br><br><br><br>
             <strong><u>{{ $asset->nama_pemakai }}</u></strong><br>

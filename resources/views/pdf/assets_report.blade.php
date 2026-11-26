@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Daftar Inventaris BMN</title>
+    <title>Laporan Daftar Inventaris</title>
     <style>
         @page { margin: 1cm; size: a4 landscape; }
         body { font-family: Arial, sans-serif; font-size: 10px; color: #000; }
@@ -24,13 +24,13 @@
 </head>
 <body>
     <div class="kop">
-        <h4>KEMENTERIAN HUKUM DAN HAK ASASI MANUSIA RI</h4>
-        <h4>KANTOR WILAYAH JAWA TIMUR</h4>
-        <h2>LAPAS KELAS IIB JOMBANG</h2>
-        <p>Jl. KH. Wahid Hasyim No. 151, Jombang | Telp: (0321) 861113</p>
+        <h4>KEMENTERIAN ATRBPN RI</h4>
+        <h4>KANTOR WILAYAH JAWA TENGAH</h4>
+        <h2>KANTAH KAB. BOYOLALI</h2>
+        <p>Jl. RINGROUTE SELATAN BYL</p>
     </div>
 
-    <div class="title">LAPORAN DAFTAR INVENTARIS BARANG MILIK NEGARA (BMN)</div>
+    <div class="title">LAPORAN DAFTAR ALAT UKUR</div>
     <div class="subtitle">Sesuai Posisi Per Tanggal: {{ $date }}</div>
 
     <table>
@@ -67,15 +67,15 @@
     <div class="footer">
         <div class="ttd-box">
             Mengetahui,<br>
-            Kepala Urusan Umum
+            Kepala Seksi SP
             <br><br><br><br><br>
             <strong>..........................................</strong><br>
             NIP. ..........................................
         </div>
         <div class="spacer"></div>
         <div class="ttd-box">
-            Jombang, {{ $date }}<br>
-            Pengelola BMN
+            Boyolali, {{ $date }}<br>
+            Petugas
             <br><br><br><br><br>
             <strong>..........................................</strong><br>
             NIP. ..........................................

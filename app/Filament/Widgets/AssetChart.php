@@ -15,7 +15,7 @@ class AssetChart extends ChartWidget
 
     protected static ?string $maxHeight = '300px';
 
-    protected static ?string $heading = 'Statistik Kondisi Aset';
+    protected static ?string $heading = 'Statistik Kondisi Berkas';
 
     protected function getData(): array
     {
@@ -25,14 +25,14 @@ class AssetChart extends ChartWidget
             ->get()
             ->pluck('total', 'kondisi');
 
-        $baik = $data->get('BAIK', 0);
-        $rusakRingan = $data->get('RUSAK_RINGAN', 0);
-        $rusakBerat = $data->get('RUSAK_BERAT', 0);
+        $baik = $data->get('MASUK', 0);
+        $rusakRingan = $data->get('PROSES', 0);
+        $rusakBerat = $data->get('SELESAI', 0);
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Jumlah Aset',
+                    'label' => 'Jumlah Berkas',
                     'data' => [$baik, $rusakRingan, $rusakBerat],
                     'backgroundColor' => [
                         '#10b981', // Hijau
@@ -43,7 +43,7 @@ class AssetChart extends ChartWidget
                     'borderColor' => 'transparent',
                 ],
             ],
-            'labels' => ['Baik', 'Rusak Ringan', 'Rusak Berat'],
+            'labels' => ['Masuk', 'Proses', 'Selesai'],
         ];
     }
 

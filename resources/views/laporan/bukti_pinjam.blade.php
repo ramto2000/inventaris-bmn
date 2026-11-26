@@ -28,13 +28,13 @@
 </head>
 <body>
     <div class="kop">
-        <h4>KEMENTERIAN HUKUM DAN HAK ASASI MANUSIA RI</h4>
-        <h4>KANTOR WILAYAH JAWA TIMUR</h4>
-        <h2>LAPAS KELAS IIB JOMBANG</h2>
-        <p>Jl. KH. Wahid Hasyim No. 151, Jombang | Telp: (0321) 861113</p>
+        <h4>KEMENTERIAN ATRBPN RI</h4>
+        <h4>KANTOR WILAYAH JAWA TENGAH</h4>
+        <h2>KANTAH KAB. BOYOLALI</h2>
+        <p>Jl. KH. RINGROUTE SELATAN BOYOLALI</p>
     </div>
 
-    <div class="title">BERITA ACARA PEMINJAMAN BARANG MILIK NEGARA</div>
+    <div class="title">BERITA ACARA PEMINJAMAN BARANG </div>
     <div class="doc-number">Nomor: W.15.PAS.PAS.10-BMN.{{ date('Y') }}.{{ str_pad($loan->id, 3, '0', STR_PAD_LEFT) }}</div>
 
     <div class="content">
@@ -45,7 +45,7 @@
                 <td width="5%">I.</td>
                 <td width="25%">Nama</td>
                 <td width="2%">:</td>
-                <td><strong>PETUGAS PENGELOLA BMN</strong></td>
+                <td><strong>PETUGAS</strong></td>
             </tr>
             <tr>
                 <td></td>
@@ -123,7 +123,7 @@
             Yang Menyerahkan,<br>
             PIHAK PERTAMA
             <br><br><br><br><br>
-            <strong><u>PENGELOLA BMN</u></strong><br>
+            <strong><u>PETUGAS</u></strong><br>
             NIP. ..........................................
         </div>
     </div>
